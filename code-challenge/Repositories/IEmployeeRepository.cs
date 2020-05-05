@@ -9,6 +9,9 @@ namespace challenge.Repositories
         Employee GetById(String id);
         Employee Add(Employee employee);
         Employee Remove(Employee employee);
+
+        Compensation AddCompensation(Compensation compensation);
+        Compensation GetCompensationById(String id);
         Task SaveAsync();
     }
 }

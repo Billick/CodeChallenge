@@ -29,7 +29,22 @@ namespace challenge.Repositories
 
         public Employee GetById(string id)
         {
-            return _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            //Employee employee = _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            List<Employee> list = _employeeContext.Employees.ToList();
+            Employee employee = list.SingleOrDefault(e => e.EmployeeId == id);
+
+            return employee;
+        }
+
+        public Compensation AddCompensation(Compensation compensation)
+        {
+            _employeeContext.Compensations.Add(compensation);
+            return compensation;
+        }
+
+        public Compensation GetCompensationById(string id)
+        {
+            return _employeeContext.Compensations.SingleOrDefault(c => c.EmployeeId == id);
         }
 
         public Task SaveAsync()

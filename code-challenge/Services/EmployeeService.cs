@@ -40,6 +40,53 @@ namespace challenge.Services
             return null;
         }
 
+        
+
+        public ReportingStructure GetReportingStructureById(string id)
+        {
+            if(!String.IsNullOrEmpty(id))
+            {
+                ReportingStructure ret = new ReportingStructure();
+                Employee e = _employeeRepository.GetById(id);
+                ret.Employee = e.FirstName + " " + e.LastName;
+                ret.NumberOfReports = GetReportCount(e.DirectReports);
+                return ret;
+            }
+            return null;
+        }
+
+        public Compensation GetCompensationById(string id)
+        {
+
+            if (!String.IsNullOrEmpty(id))
+            {
+                return _employeeRepository.GetCompensationById(id);
+            }
+            return null;
+        }
+
+        public Compensation CreateCompensation(Compensation compensation)
+        {
+            if(compensation != null)
+            {
+                _employeeRepository.AddCompensation(compensation);
+                _employeeRepository.SaveAsync().Wait();
+            }
+            return compensation;
+        }
+
+        private int GetReportCount(List<Employee> employees)
+        {
+            if (employees == null || employees.Count == 0)
+                return 0;
+            int count = 0;
+            foreach(Employee e in employees)
+            {
+                count += 1 + (e.DirectReports == null ? 0 : GetReportCount(e.DirectReports));
+            }
+            return count;
+        }
+
         public Employee Replace(Employee originalEmployee, Employee newEmployee)
         {
             if(originalEmployee != null)

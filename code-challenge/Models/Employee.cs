@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,5 +20,13 @@ namespace challenge.Models
     {
         public String Employee { get; set; }
         public int NumberOfReports { get; set; }
+    }
+
+    public class Compensation
+    {
+        [Key]
+        public String EmployeeId { get; set; }
+        public int Salary { get; set; }
+        public DateTime EffectiveDate { get; set; }
     }
 }
