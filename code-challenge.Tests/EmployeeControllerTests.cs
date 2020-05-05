@@ -157,5 +157,32 @@ namespace code_challenge.Tests.Integration
             Assert.AreEqual(expectedName, reporting.Employee);
             Assert.AreEqual(expectedCount, reporting.NumberOfReports);
         }
+
+        [TestMethod]
+        public void CreateCompensation_Returns_Created()
+        {
+
+            var compensation = new Compensation()
+            {
+                EmployeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f",
+                Salary = 55000,
+                EffectiveDate = new DateTime(2018, 3, 17)
+            };
+
+
+            var requestContent = new JsonSerialization().ToJson(compensation);
+
+            // Execute
+            var postRequestTask = _httpClient.PostAsync("api/compensation",
+               new StringContent(requestContent, Encoding.UTF8, "application/json"));
+            var response = postRequestTask.Result;
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+
+            var newCompensation = response.DeserializeContent<Compensation>();
+            Assert.IsNotNull(newCompensation.EmployeeId);
+            Assert.AreEqual(compensation.Salary, newCompensation.Salary);
+            Assert.AreEqual(compensation.EffectiveDate, compensation.EffectiveDate);
+        }
+
     }
 }
