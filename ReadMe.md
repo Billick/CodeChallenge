@@ -1,3 +1,8 @@
+## Assumptions and fixes made
+I found that the GET route for Employee was erroneously returning null for the the DirectReports field.  As a workaround, I converted the DBSet object that holds the employee data into a List before executing the query.  This fixed the issue, but there probably is a better way to handle this. 
+
+I also made the assumption that when an employee field was called for this meant an employee object.  This could have also meant the employee ID or the employee full name.
+
 # Mindex Coding Challenge
 ## What's Provided
 A simple [.NetCore 2.1](https://www.microsoft.com/net/download/dotnet-core/sdk-2.1.300) web application has been created and bootstrapped 
