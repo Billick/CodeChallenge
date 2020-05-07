@@ -145,7 +145,8 @@ namespace code_challenge.Tests.Integration
 
             // Arrange
             var employeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f";
-            var expectedName = "John Lennon";
+            var expectedFirstName = "John";
+            var expectedLastName = "Lennon";
             var expectedCount = 4;
 
             var getRequestTask = _httpClient.GetAsync($"api/reportingstructure/{employeeId}");
@@ -154,17 +155,22 @@ namespace code_challenge.Tests.Integration
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var reporting = response.DeserializeContent<ReportingStructure>();
-            Assert.AreEqual(expectedName, reporting.Employee);
+            Assert.AreEqual(expectedFirstName, reporting.Employee.FirstName);
+            Assert.AreEqual(expectedLastName, reporting.Employee.LastName);
+            Assert.AreEqual(employeeId, reporting.Employee.EmployeeId);
             Assert.AreEqual(expectedCount, reporting.NumberOfReports);
         }
 
         [TestMethod]
         public void CreateCompensation_Returns_Created()
         {
+            Employee employee = new Employee();
+            employee.EmployeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f";
 
             var compensation = new Compensation()
             {
-                EmployeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f",
+                Employee = employee,
+                EmployeeId = employee.EmployeeId,
                 Salary = 55000,
                 EffectiveDate = new DateTime(2018, 3, 17)
             };
@@ -179,7 +185,7 @@ namespace code_challenge.Tests.Integration
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
             var newCompensation = response.DeserializeContent<Compensation>();
-            Assert.IsNotNull(newCompensation.EmployeeId);
+            Assert.IsNotNull(newCompensation.Employee);
             Assert.AreEqual(compensation.Salary, newCompensation.Salary);
             Assert.AreEqual(compensation.EffectiveDate, compensation.EffectiveDate);
         }

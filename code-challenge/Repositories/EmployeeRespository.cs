@@ -38,13 +38,16 @@ namespace challenge.Repositories
 
         public Compensation AddCompensation(Compensation compensation)
         {
+            compensation.Employee = GetById(compensation.EmployeeId);
             _employeeContext.Compensations.Add(compensation);
             return compensation;
         }
 
         public Compensation GetCompensationById(string id)
         {
-            return _employeeContext.Compensations.SingleOrDefault(c => c.EmployeeId == id);
+            Compensation compensation = _employeeContext.Compensations.SingleOrDefault(c => c.Employee.EmployeeId == id);
+            compensation.Employee = GetById(id);
+            return compensation;
         }
 
         public Task SaveAsync()

@@ -8,6 +8,7 @@ namespace challenge.Models
 {
     public class Employee
     {
+        [Key]
         public String EmployeeId { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
@@ -18,7 +19,7 @@ namespace challenge.Models
 
     public class ReportingStructure
     {
-        public String Employee { get; set; }
+        public Employee Employee { get; set; }
         public int NumberOfReports { get; set; }
     }
 
@@ -26,6 +27,7 @@ namespace challenge.Models
     {
         [Key]
         public String EmployeeId { get; set; }
+        public Employee Employee { get; set; }
         public int Salary { get; set; }
         public DateTime EffectiveDate { get; set; }
     }

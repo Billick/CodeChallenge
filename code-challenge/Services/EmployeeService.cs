@@ -48,7 +48,7 @@ namespace challenge.Services
             {
                 ReportingStructure ret = new ReportingStructure();
                 Employee e = _employeeRepository.GetById(id);
-                ret.Employee = e.FirstName + " " + e.LastName;
+                ret.Employee = e;
                 ret.NumberOfReports = GetReportCount(e.DirectReports);
                 return ret;
             }
@@ -75,13 +75,14 @@ namespace challenge.Services
             return compensation;
         }
 
-        private int GetReportCount(List<Employee> employees)
+        private int GetReportCount(List<Employee> reports)
         {
-            if (employees == null || employees.Count == 0)
+            if (reports == null || reports.Count == 0)
                 return 0;
             int count = 0;
-            foreach(Employee e in employees)
+            foreach(Employee r in reports)
             {
+                Employee e = _employeeRepository.GetById(r.EmployeeId);
                 count += 1 + (e.DirectReports == null ? 0 : GetReportCount(e.DirectReports));
             }
             return count;
